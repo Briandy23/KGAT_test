@@ -50,7 +50,7 @@ def evaluate(model, dataloader, Ks, device):
                 
 
             batch_scores = batch_scores.cpu()
-            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks)
+            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=500)
 
             cf_scores.append(batch_scores.numpy())
             for k in Ks:
