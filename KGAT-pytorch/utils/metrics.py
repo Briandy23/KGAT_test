@@ -181,7 +181,7 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
         # === In ra kết quả recommendation cho từng user ===
         user = user_ids[i]
         test_set = test_set[i]
-        ranked_items = [rank_indices[j] for j in rank_indices[i][:10]]  # top-10
+        ranked_items = [test_set[j] for j in rank_indices[i][:10]]  # top-10
         ground_truth_items = list(test_user_dict[user])
         
         print(f"\nUser {user}")
