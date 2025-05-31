@@ -164,6 +164,8 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
         
         # Selected items for testing: ground truth + negative samples
         test_set = list(test_item) + list(negative_samples)
+        if idx < 10:  # Print only for the first 10 users
+            print(f"User {user} - Test items: {test_set}, Train items: {train_items}, Possible negatives: {len(possible_negatives)}")
         # test_indices.append(test_set)
 
         # Get the corresponding scores of these items from the cf_scores matrix
@@ -182,6 +184,8 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
     
     for i in range(len(user_ids)):
         binary_hit.append(test_pos_item_binary[i][rank_indices[i]])
+        if i < 10:
+            print(f"User {user_ids[i]} - Binary hit: {binary_hit[-1]}, Rank indices: {rank_indices[i]}")
     binary_hit = np.array(binary_hit, dtype=np.float32)
 
     metrics_dict = {}
