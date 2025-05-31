@@ -41,7 +41,7 @@ def evaluate(model, dataloader, Ks, device, save_cf_scores=False):
                 batch_scores = model(batch_user_ids, item_ids, mode='predict')       # (n_batch_users, n_items)
 
             batch_scores = batch_scores.cpu()
-            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=300)
+            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=100)
 
             # print('====== lksdjflkd ======')
             # print(batch_scores.shape)
@@ -217,7 +217,7 @@ def train(args):
 
     # print best metrics
     best_metrics = metrics_df.loc[metrics_df['epoch_idx'] == best_epoch].iloc[0].to_dict()
-    logging.info('Best CF Evaluation: Epoch {:04d} | Precision [{:.4f}, {:.4f}], Recall [{:.4f}, {:.4f}], NDCG [{:.4f}, {:.4f}]'.format(
+    logging.info('Best CF Evaluation: Epoch {:04d} | Precision [{:.4f}, {:.4f}], Recall [{:.4f}, {:.4f}], NDCG [{:.4f}, {:.4f}], F1 [{:.4f},{:.4f}], MAP[{:.4f},{:.4f}]'.format(
         int(best_metrics['epoch_idx']), 
         best_metrics['precision@{}'.format(k_min)], best_metrics['precision@{}'.format(k_max)], 
         best_metrics['recall@{}'.format(k_min)], best_metrics['recall@{}'.format(k_max)], 

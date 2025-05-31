@@ -50,7 +50,7 @@ def evaluate(model, dataloader, Ks, device):
                 
 
             batch_scores = batch_scores.cpu()
-            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=300)
+            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=100)
 
             cf_scores.append(batch_scores.numpy())
             for k in Ks:
@@ -151,7 +151,7 @@ def train(args):
         if (epoch % args.evaluate_every) == 0 or epoch == args.n_epoch:
             time3 = time()
             _, metrics_dict = evaluate(model, data, Ks, device)
-            logging.info('CF Evaluation: Epoch {:04d} | Total Time {:.1f}s | Precision [{:.4f}, {:.4f}], Recall [{:.4f}, {:.4f}], NDCG [{:.4f}, {:.4f}]'.format(
+            logging.info('CF Evaluation: Epoch {:04d} | Total Time {:.1f}s | Precision [{:.4f}, {:.4f}], Recall [{:.4f}, {:.4f}], NDCG [{:.4f}, {:.4f}], F1 [{:.4f},{:.4f}], MAP[{:.4f},{:.4f}]'.format(
                 epoch, time() - time3, 
                 metrics_dict[k_min]['precision'], metrics_dict[k_max]['precision'], 
                 metrics_dict[k_min]['recall'], metrics_dict[k_max]['recall'], 
