@@ -143,7 +143,7 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
     binary_hit = []
     temp_cf_scores = []
     test_indices = []
-
+    test_set = []
     test_pos_item_binary = np.concatenate((
         np.ones((len(user_ids), 1)),
         np.zeros((len(user_ids), num_negatives))
@@ -180,8 +180,8 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
 
         # === In ra kết quả recommendation cho từng user ===
         user = user_ids[i]
-        test_set = test_sets[i]
-        ranked_items = [test_set[j] for j in rank_indices[i][:10]]  # top-10
+        test_set = test_set[i]
+        ranked_items = [rank_indices[j] for j in rank_indices[i][:10]]  # top-10
         ground_truth_items = list(test_user_dict[user])
         
         print(f"\nUser {user}")
