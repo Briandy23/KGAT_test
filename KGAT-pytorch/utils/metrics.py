@@ -170,7 +170,6 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
 
         # Get the corresponding scores of these items from the cf_scores matrix
         temp_cf_scores.append(cf_scores[idx][test_set].tolist())
-        print(temp_cf_scores[-1])
         
     try:
         _, rank_indices = torch.sort(torch.LongTensor(temp_cf_scores).cuda(), descending=True)    # try to speed up the sorting process
