@@ -160,7 +160,7 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
         
         # Negative samples: items not in the test items and not in the train items
         possible_negatives = [item for item in item_ids if item not in train_items and item not in test_item]
-        negative_samples = np.random.choice(possible_negatives, len(possible_negatives), replace=False)
+        negative_samples = np.random.choice(possible_negatives, len(possible_negatives)-10, replace=False)
         
         # Selected items for testing: ground truth + negative samples
         test_set = list(test_item) + list(negative_samples)
