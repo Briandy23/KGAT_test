@@ -168,6 +168,7 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
 
         # Get the corresponding scores of these items from the cf_scores matrix
         temp_cf_scores.append(cf_scores[idx][test_set].tolist())
+        print(temp_cf_scores[-1])
         
     try:
         _, rank_indices = torch.sort(torch.LongTensor(temp_cf_scores).cuda(), descending=True)    # try to speed up the sorting process
@@ -175,18 +176,6 @@ def calc_metrics_at_k(cf_scores, train_user_dict, test_user_dict, user_ids, item
         _, rank_indices = torch.sort(torch.LongTensor(temp_cf_scores), descending=True)
 
     rank_indices = rank_indices.cpu()
-    for i in range(len(user_ids)):
-        binary_hit.append(test_pos_item_binary[i][rank_indices[i]])
-
-        # === In ra kết quả recommendation cho từng user ===
-        user = user_ids[i]
-        test_set = test_set[i]
-        ranked_items = [test_set[j] for j in rank_indices[i][:10]]  # top-10
-        ground_truth_items = list(test_user_dict[user])
-        
-        print(f"\nUser {user}")
-        print(f"Ground truth items: {ground_truth_items}")
-        print(f"Top-10 recommended items: {ranked_items}")
 
     # binary_hit = [] # shape (n_users, num_negatives+1)
     # test_indices = np.asarray(test_indices)
