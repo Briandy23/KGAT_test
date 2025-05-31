@@ -57,13 +57,13 @@ def evaluate(model, dataloader, Ks, device):
                 for m in metric_names:
                     metrics_dict[k][m].append(batch_metrics[k][m])
             pbar.update(1)
-            if batch_idx == 0:  # chỉ in batch đầu
-                for i, user_id in enumerate(batch_user_ids.cpu().numpy()):
-                    print(f"User {user_id} has {len(test_user_dict[user_id])} test positive items")
-                    scores = batch_scores[i].numpy()
-                    top5_idx = np.argsort(-scores)[:5]
-                    print(f"Top5 predicted items for user {user_id}: {top5_idx}")
-                    print(f"Positive test items: {test_user_dict[user_id]}")
+            # if batch_idx == 0:  # chỉ in batch đầu
+            #     for i, user_id in enumerate(batch_user_ids.cpu().numpy()):
+            #         print(f"User {user_id} has {len(test_user_dict[user_id])} test positive items")
+            #         scores = batch_scores[i].numpy()
+            #         top5_idx = np.argsort(-scores)[:5]
+            #         print(f"Top5 predicted items for user {user_id}: {top5_idx}")
+            #         print(f"Positive test items: {test_user_dict[user_id]}")
 
     cf_scores = np.concatenate(cf_scores, axis=0)
     for k in Ks:

@@ -41,7 +41,7 @@ def evaluate(model, dataloader, Ks, device, save_cf_scores=False):
                 batch_scores = model(batch_user_ids, item_ids, mode='predict')       # (n_batch_users, n_items)
 
             batch_scores = batch_scores.cpu()
-            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=500)
+            batch_metrics = calc_metrics_at_k(batch_scores, train_user_dict, test_user_dict, batch_user_ids.cpu().numpy(), item_ids.cpu().numpy(), Ks, num_negatives=300)
 
             # print('====== lksdjflkd ======')
             # print(batch_scores.shape)
