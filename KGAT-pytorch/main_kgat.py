@@ -180,7 +180,7 @@ def train(args):
         # evaluate cf
         if (epoch % args.evaluate_every) == 0 or epoch == args.n_epoch:
             time6 = time()
-            _,metrics_dict = evaluate(model, data, Ks, device)
+            metrics_dict = evaluate(model, data, Ks, device)
             logging.info('CF Evaluation: Epoch {:04d} | Total Time {:.1f}s | Precision [{:.4f}, {:.4f}], Recall [{:.4f}, {:.4f}], NDCG [{:.4f}, {:.4f}], F1 [{:.4f},{:.4f}], MAP[{:.4f},{:.4f}]'.format(
                 epoch, time() - time6, 
                 metrics_dict[k_min]['precision'], metrics_dict[k_max]['precision'], 
@@ -199,7 +199,7 @@ def train(args):
             if should_stop:
                 break
 
-            if metrics_list[k_max]['recall'].index(best_recall) == len(epoch_list) - 1:
+            if metrics_list[k_min]['recall'].index(best_recall) == len(epoch_list) - 1:
                 save_model(model, args.save_dir, epoch, best_epoch)
                 logging.info('Save model on epoch {:04d}!'.format(epoch))
                 best_epoch = epoch
