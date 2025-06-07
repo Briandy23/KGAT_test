@@ -16,7 +16,7 @@ def precision_at_k(hit, k):
     hit: list, element is binary (0 / 1)
     """
     hit = np.asarray(hit)[:k]
-    return np.mean(hit) if hit.size > 0 else 0.0
+    return np.mean(hit)
 
 
 def precision_at_k_batch(hits, k):
@@ -27,17 +27,6 @@ def precision_at_k_batch(hits, k):
     res = hits[:, :k].mean(axis=1)
     return res
 
-
-def average_precision(hit, cut):
-    """
-    calculate average precision (area under PR curve)
-    hit: list, element is binary (0 / 1)
-    """
-    hit = np.asarray(hit)[:cut]
-    precisions = [precision_at_k(hit, k + 1) for k in range(len(hit)) if hit[k] == 1]
-    if not precisions:
-        return 0.0
-    return np.mean(precisions)
 
 
 def dcg_at_k(rel, k):
@@ -108,13 +97,25 @@ def F1_batch(pre, rec):
     """
     return np.where(pre + rec > 0, 2 * pre * rec / (pre + rec), 0.)
 
+def average_precision(hit, cut):
+    """
+    calculate average precision (area under PR curve)
+    hit: list, element is binary (0 / 1)
+    """
+    hit = np.asarray(hit)[:cut]
+    precisions = [precision_at_k(hit, k + 1)
+                  for k in range(len(hit)) if hit[k] == 1]
+    if not precisions:
+        return 0.0
+    return np.mean(precisions)
+
 def mean_average_precision(hits, k):
     """
     Calculate Mean Average Precision at k
     hits: array, shape (n_users, n_items), binary (0 / 1)
     """
     ap_scores = [average_precision(hit, k) for hit in hits]
-    return np.mean(ap_scores)
+    return np.array(ap_scores)
 
 def calc_auc(ground_truth, prediction):
     try:
